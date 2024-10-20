@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remote</title>
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container{
+            width: 300px;
+            height: 400px;
+            /* background-color: antiquewhite; */
+        }
+        .head{
+            font-family: sans-serif;
+            text-align: center;
+            color: #3388FF;
+            font-weight: 600;
+        }
+        .form{
+            width: 100%;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: space-evenly;
+            /* background-color: greenyellow; */
+        }
+        .inp{
+            width: 150px;
+            height: 35px;
+            border-radius: 5px;
+            border: 1px solid #3388FF;
+            outline: none;
+            padding:0px 10px ;
+            box-sizing: border-box;
+        }
+        .set{
+            width: 80px;
+            height: 35px;
+            background-color: #3388FF;
+            border-radius: 5px;
+            outline: none;
+            border: none;
+            color: white;
+            font-weight: 500;
+        }
+        .reset{
+           width: 80px;
+           height: 35px; 
+           background-color: #dc3545;
+           border-radius: 5px;
+            outline: none;
+            border: none;
+            color: white;
+            font-weight: 500;
+            display: none;
+
+        }
+        .set:active{
+            background-color: #3388ffb0;
+        }
+        .reset:active{
+            background-color: #dc3546b4;
+        }
+
+        ::placeholder{
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="head">Hello Remote</h2>
+        <div class="box-in">
+            <form action="" name="value" class="form">
+                <!-- <h2>Remote</h2> -->
+            <div class="inp-set">
+                <input type="number" class="inp" placeholder="Enter cooker whistles">
+            <input type="submit" value="Set" class="set">
+            </div>
+            <div class="inp-reset">
+                <input type="reset" value="Reset" class="reset">
+            </div>
+            </form>
+            <button id="play">Play Sound</button>
+    <button id="stop">Stop Sound</button>
+        </div>
+    </div>
+
+    <script>
+        const context = new (window.AudioContext || window.webkitAudioContext)();
+let isPlaying = false;
+let intervalId;
+
+// Function to create and play a single tick sound
+function playTick() {
+    const oscillator = context.createOscillator();
+    oscillator.type = 'square'; // Choose the wave type (square for a clicky sound)
+    oscillator.frequency.setValueAtTime(1000, context.currentTime); // Frequency in hertz
+    oscillator.connect(context.destination);
+    oscillator.start();
+    oscillator.stop(context.currentTime + 0.1); // Stop after 0.1 seconds
+}
+
+// Function to play the tik tik tik sound repeatedly
+function playSound() {
+    if (!isPlaying) {
+        isPlaying = true;
+        intervalId = setInterval(playTick, 200); // Adjust the interval for faster/slower ticks (200ms = 5 ticks per second)
+    }
+}
+
+// Function to stop the sound
+function stopSound() {
+    if (isPlaying) {
+        clearInterval(intervalId);
+        isPlaying = false;
+    }
+}
+
+// Attach event listeners to the buttons
+document.getElementById('play').addEventListener('click', playSound);
+document.getElementById('stop').addEventListener('click', stopSound);
+
+let set_in=document.querySelector('.inp-set');
+let set=document.querySelector('.set');
+let reset=document.querySelector('.reset');
+let input=document.querySelector('.inp');
+set.addEventListener('click',function(event){
+    event.preventDefault();
+    set_in.style.display='none';
+    reset.style.display='block';
+    console.log(input.value);
+    
+})
+reset.addEventListener('click',function(event){
+    event.preventDefault();
+    set_in.style.display='block';
+    reset.style.display='none';
+})
+
+    </script>
+
+</body>
+</html>

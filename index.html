@@ -9,18 +9,22 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            /* min-height: 100vh; */
+            overflow: hidden;
         }
         .container{
-            width: 300px;
-            height: 400px;
-            /* background-color: antiquewhite; */
+            width: 350px;
+            height: 620px;
+            /* border:2px solid #3388FF;
+            border-radius: 10px; */
         }
         .head{
             font-family: sans-serif;
             text-align: center;
             color: #3388FF;
             font-weight: 600;
+            font-size: 30px;
+            padding-bottom: 20px;
         }
         .form{
             width: 100%;
@@ -30,35 +34,39 @@
             flex-direction: column;
             justify-content: space-evenly;
             /* background-color: greenyellow; */
+            margin-bottom: 20px;
         }
         .inp{
-            width: 150px;
-            height: 35px;
+            width: 200px;
+            height: 50px;
             border-radius: 5px;
             border: 1px solid #3388FF;
             outline: none;
             padding:0px 10px ;
             box-sizing: border-box;
+            font-size: 18px;
         }
         .set{
-            width: 80px;
-            height: 35px;
+            width: 100px;
+            height: 50px;
             background-color: #3388FF;
             border-radius: 5px;
             outline: none;
             border: none;
             color: white;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 16px;
         }
         .reset{
-           width: 80px;
-           height: 35px; 
+           width: 100px;
+           height: 50px; 
            background-color: #dc3545;
            border-radius: 5px;
             outline: none;
             border: none;
             color: white;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 16px;
             display: none;
 
         }
@@ -70,7 +78,94 @@
         }
 
         ::placeholder{
-            font-size: 12px;
+            font-size: 16px;
+        }
+        .part2{
+            width: 100%;
+            height: 60px;
+            /* background-color: antiquewhite; */
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            
+        }
+        .counter{
+            font-family: monospace;
+            width: 150px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            background-color: #3388ff11;
+            border-radius: 10px;
+        }
+        .hline{
+            height: 100px;
+            border:1.5px solid #3388FF;
+            border-radius: 10px;
+        }
+        .wcount{
+            width: 150px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            /* background-color: rebeccapurple; */
+            font-family: monospace;
+            font-size: 25px;
+            background-color: #3388ff11;
+            border-radius: 10px;
+        }
+        .freeze{
+            width: 100%;
+            height: 100px;
+            /* background-color: rebeccapurple; */
+            margin-top: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #stop{
+            width: 150px;
+            height: 60px;
+            background-color: #3388FF;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            color: white;
+            font-weight: 600;
+        }
+        #stop:active{
+            background-color: #3388ffb0;
+        }
+.hmany{
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    /* background-color: #dc354625; */
+    color: #3388FF;
+    
+}
+.pline{
+    height: 50px;
+    border: 1px dashed #3388FF;
+}
+.remain{
+    width: 50px;
+    height: 50px;
+    /* background-color: rgba(127, 255, 212, 0.233); */
+    text-align: center;
+    line-height: 50px;
+}
+        @media  screen and (max-width:480px) {
+            .container{
+            width: 350px;
+            height: 610px;
+            border:2px solid #3388FF;
+            border-radius: 10px;
+        }
         }
     </style>
 </head>
@@ -79,17 +174,27 @@
         <h2 class="head">Hello Remote</h2>
         <div class="box-in">
             <form action="" name="value" class="form">
-                <!-- <h2>Remote</h2> -->
             <div class="inp-set">
-                <input type="number" class="inp" placeholder="Enter cooker whistles">
+                <input type="number" class="inp" placeholder="Enter cooker whistles" required>
             <input type="submit" value="Set" class="set">
             </div>
             <div class="inp-reset">
                 <input type="reset" value="Reset" class="reset">
             </div>
             </form>
-            <button id="play">Play Sound</button>
-    <button id="stop">Stop Sound</button>
+            <div class="part2">
+                <div class="counter">
+                    <p class="time">00:00:00</p>
+                </div>
+                <div class="hline"></div>
+                <div class="wcount">
+                    <p class="hmany">0</p>
+                    <div class="pline"></div>
+                    <p class="remain">0</p>
+                </div>
+            </div>
+            <!-- <button id="play">Play Sound</button> -->
+    <div class="freeze"><button id="stop">Freeze</button></div>
         </div>
     </div>
 
@@ -125,26 +230,93 @@ function stopSound() {
 }
 
 // Attach event listeners to the buttons
-document.getElementById('play').addEventListener('click', playSound);
-document.getElementById('stop').addEventListener('click', stopSound);
+// document.getElementById('play').addEventListener('click', playSound);
+let stop=document.getElementById('stop')
+stop.addEventListener('click',stopSound);
 
 let set_in=document.querySelector('.inp-set');
 let set=document.querySelector('.set');
 let reset=document.querySelector('.reset');
 let input=document.querySelector('.inp');
+let hmany=document.querySelector('.hmany');
+let remain=document.querySelector('.remain');
 set.addEventListener('click',function(event){
     event.preventDefault();
     set_in.style.display='none';
     reset.style.display='block';
-    console.log(input.value);
-    
+    if(input.value==''){
+        alert('Please Enter a Valid number')
+    }
+    else{
+   // alert(`Cooker set to ${input.value} whistles`)
+    hmany.innerText=input.value
+}
 })
 reset.addEventListener('click',function(event){
     event.preventDefault();
     set_in.style.display='block';
     reset.style.display='none';
+    alert('Do you want to reset the Cooker Whistles')
+    stopSound()
+    hmany.innerText=0
 })
 
+
+// Counter
+const timeDisplay = document.querySelector(".time");
+
+let startTime = 0;
+let elapsedTime = 0;
+let currentTime = 0;
+let paused = true;
+let intervalID;
+let hrs = 0;
+let mins = 0;
+let secs = 0;
+
+set.addEventListener("click", () => {
+    if(paused){
+        paused = false;
+        startTime = Date.now() - elapsedTime;
+        intervalID = setInterval(updateTime, 1000);
+    }
+});
+stop.addEventListener("click", () => {
+    if(!paused){
+        paused = true;
+        elapsedTime = Date.now() - startTime;
+        clearInterval(intervalID);
+    }
+});
+reset.addEventListener("click", () => {
+    paused = true;
+    clearInterval(intervalID);
+    startTime = 0;
+    elapsedTime = 0;
+    currentTime = 0;
+    hrs = 0;
+    mins = 0;
+    secs = 0;
+    timeDisplay.textContent = "00:00:00";
+});
+
+function updateTime(){
+    elapsedTime = Date.now() - startTime;
+
+    secs = Math.floor((elapsedTime / 1000) % 60);
+    mins = Math.floor((elapsedTime / (1000 * 60)) % 60);
+    hrs = Math.floor((elapsedTime / (1000 * 60 * 60)) % 60);
+
+    secs = pad(secs);
+    mins = pad(mins);
+    hrs = pad(hrs);
+
+    timeDisplay.textContent = `${hrs}:${mins}:${secs}`;
+
+    function pad(unit){
+        return (("0") + unit).length > 2 ? unit : "0" + unit;
+    }
+}
     </script>
 
 </body>
